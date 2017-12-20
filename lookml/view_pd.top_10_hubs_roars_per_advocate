@@ -1,0 +1,51 @@
+
+- view: pd_top_10_hubs_roars_per_advocate
+  derived_table:
+    sql: |
+      -- LEADERBOARD QUERY, top 10 hubs
+      -- (count of roars in last week) / (total advocates)
+      select  
+        co.name, 
+        count(distinct case when (r.occurred_at > dateadd(day, -7, getdate())) then r.id else null end) as roars_count,
+        count(distinct c.id) as advocates_count,
+        round((count(distinct case when (r.occurred_at > dateadd(day, -7, getdate())) then r.id else null end) / count(distinct c.id)::float),1) as acts_of_advocacy_per_advocate
+      from roars r
+      inner join companies co on r.company_id = co.id
+      inner join contacts c on r.contact_id = c.id
+      where c.type = 'Advocate'
+      and c.joined_at is not null
+      and coalesce(co.salesforce_id,'') != ''
+      and co.subdomain != 'vip'
+      group by 1
+      having count(distinct case when (r.occurred_at > dateadd(day, -7, getdate())) then r.id else null end) > 1
+      order by 4 desc
+      limit 10
+
+  fields:
+  - measure: count
+    type: count
+    drill_fields: detail*
+
+  - dimension: name
+    type: string
+    sql: ${TABLE}.name
+
+  - dimension: roars_count
+    type: number
+    sql: ${TABLE}.roars_count
+
+  - dimension: advocates_count
+    type: number
+    sql: ${TABLE}.advocates_count
+
+  - dimension: acts_of_advocacy_per_advocate
+    type: number
+    sql: ${TABLE}.acts_of_advocacy_per_advocate
+
+  sets:
+    detail:
+      - name
+      - roars_count
+      - advocates_count
+      - acts_of_advocacy_per_advocate
+

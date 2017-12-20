@@ -1,0 +1,9 @@
+1. send Sachin updated LOOKML files (top 10 leaderboard - VIEW, percent reward redeemers - VIEW, product dashboard - MODEL )
+2. label contact status graph:
+
+x-axis: Time
+y-axis: Number of Advocates
+Contacts Joined Count
+
+3. label reward redeemers graph
+

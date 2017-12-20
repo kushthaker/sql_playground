@@ -1,0 +1,12 @@
+- include: "majority_report.connection.lookml"
+
+- include: "*.view.lookml"       # include all views in this project
+
+- explore: pd_admin_sessions
+- explore: pd_challenges_created
+- explore: pd_sessions_per_advocate
+- explore: pd_referrals_received
+- explore: pd_advocacy_acts_per_admin_session
+- explore: pd_challenges_completed_per_advocate
+- explore: pd_top_10_hubs_roars_per_advocate
+- explore: pd_percent_reward_redeemers
